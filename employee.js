@@ -67,15 +67,43 @@ function startingPrompt() {
                 updateRoles();
             break;
 
+            case "Finished":
+                console.log("You are all done!");
+                connection.end();
+            break;
+            
+            default:
+                startingPrompt();
+            
         }
     })
 }
 
 function addEmployee() {
-    inquirer.prompt([{
+    inquirer.prompt([
+        {
+            name: "first_name",
+            type: "input",
+            message: "What is the employee's first name?"
+        },
+        {
+            name: "last_name",
+            type: "input",
+            message: "What is the employee's last name?"
+        },
+        {
+            name: "role",
+            type: "input",
+            message: "What is the employee's role?"
+        },
+        {
+            name: "manager",
+            type: "input",
+            message: "Who is the employee's manager?"
+        },
 
-    }])
-}
+    ]);
+};
 
 function addRole() {
     inquirer.prompt([{
