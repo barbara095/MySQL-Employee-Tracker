@@ -1,5 +1,6 @@
 var mysql = require("mysql");
 const inquirer = require("inquirer");
+const conTable = require("console.table");
 
 var connection = mysql.createConnection({
   host: "localhost",
@@ -26,21 +27,89 @@ function startingPrompt() {
         type: "list",
         message: "Welcome to Employee Tracker. What would you like to do?",
         choices: [
-            "Add a department", 
-            "Add a role",
-            "Add an employee"
+            "Add employee", 
+            "Add role",
+            "Add department", 
+            "View all employees",
+            "View roles",
+            "View departments",
+            "Update Employee roles",
+            "Finished"
         ]
+
     }).then(function(response) {
-        if(response.add === "Add a department") {
-            addDept();
-        } else {
-            bidItem();
+        switch(response) {
+            case "Add employee":
+                addEmployee();
+            break;
+
+            case "Add role":
+                addRole();
+            break;
+
+            case "Add department":
+                addDept();
+            break;
+
+            case "View all employees":
+                viewEmployees();
+            break;
+
+            case "View roles":
+                viewRoles();
+            break;
+
+            case "View departments":
+                viewDepts();
+            break;
+
+            case "Update Employee roles":
+                updateRoles();
+            break;
+
         }
     })
 }
 
-function addDept() {
+function addEmployee() {
     inquirer.prompt([{
-        
+
     }])
 }
+
+function addRole() {
+    inquirer.prompt([{
+
+    }])
+}
+
+function addDept() {
+    inquirer.prompt([{
+
+    }])
+}
+
+function viewEmployees() {
+    inquirer.prompt([{
+
+    }])
+}
+
+function viewRoles() {
+    inquirer.prompt([{
+
+    }])
+}
+
+function viewDepts() {
+    inquirer.prompt([{
+
+    }])
+}
+
+function updateRoles() {
+    inquirer.prompt([{
+
+    }])
+}
+
