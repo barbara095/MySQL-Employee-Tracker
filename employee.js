@@ -39,16 +39,16 @@ function startingPrompt() {
 
     }).then(function (response) {
         switch (response.add) {
+            case "Add department":
+                addDept();
+                break;
+                
             case "Add employee":
                 addEmployee();
                 break;
 
             case "Add role":
                 addRole();
-                break;
-
-            case "Add department":
-                addDept();
                 break;
 
             case "View all employees":
