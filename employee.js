@@ -42,7 +42,7 @@ function startingPrompt() {
             case "Add department":
                 addDept();
                 break;
-                
+
             case "Add employee":
                 addEmployee();
                 break;
@@ -83,32 +83,32 @@ function startingPrompt() {
 }
 
 
-function roleId(id) {
-    let role = [];
-    connection.query("SELECT title FROM roles", function (err, res) {
-        for (let i = 0; i < res.length; i++) {
-            role.push(res[i].title);
-        }
+// function roleId(id) {
+//     let role = [];
+//     connection.query("SELECT title FROM roles", function (err, res) {
+//         for (let i = 0; i < res.length; i++) {
+//             role.push(res[i].title);
+//         }
 
-        inquirer.prompt([
-            {
-                type: "List",
-                name: "roleId",
-                message: "What is the employee's role?",
-                choices: role
-            }
-        ]).then(function (response) {
-            connection.query(`SELECT id from role WHERE title = '${res[0].id}'`, function (err, res) {
-                console.log(res[0].id);
+//         inquirer.prompt([
+//             {
+//                 type: "List",
+//                 name: "roleId",
+//                 message: "What is the employee's role?",
+//                 choices: role
+//             }
+//         ]).then(function (response) {
+//             connection.query(`SELECT id from role WHERE title = '${res[0].id}'`, function (err, res) {
+//                 console.log(res[0].id);
 
-                connection.query(`UPDATE employee SET role_id = '${res[0].id}' WHERE employee.id = '${id}'`, function (err, res) {
-                    if (err) throw err;
-                });
-            });
-            managerId(id);
-        });
-    });
-}
+//                 connection.query(`UPDATE employee SET role_id = '${res[0].id}' WHERE employee.id = '${id}'`, function (err, res) {
+//                     if (err) throw err;
+//                 });
+//             });
+//             managerId(id);
+//         });
+//     });
+// }
 
 // function managerId() {
 //     connection.query("SELECT title FROM roles", function(err,res) {
@@ -151,10 +151,11 @@ function addDept() {
             },
             function (err, res) {
                 if (err) throw err;
-            })
-        console.log(res.affectedRows + " added!\n");
-        startingPrompt();
+                console.log(res.affectedRows + " added!\n");
+            });
+            startingPrompt();
     });
+  
 }
 
 function addRole() {
