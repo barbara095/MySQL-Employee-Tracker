@@ -27,13 +27,16 @@ function startingPrompt() {
         type: "list",
         message: "Welcome to Employee Tracker. What would you like to do?",
         choices: [
-            "Add employee",
-            "Add role",
             "Add department",
+            "Add role",
+            "Add employee",
             "View all employees",
+            "View managers",
             "View roles",
             "View departments",
             "Update Employee roles",
+            "Delete Roles",
+            "Delete Employees",
             "Finished"
         ]
 
@@ -43,16 +46,20 @@ function startingPrompt() {
                 addDept();
                 break;
 
-            case "Add employee":
-                addEmployee();
-                break;
-
             case "Add role":
                 addRole();
                 break;
 
+            case "Add employee":
+                addEmployee();
+                break;
+
             case "View all employees":
                 viewEmployees();
+                break;
+
+            case "View managers":
+                viewManagers();
                 break;
 
             case "View roles":
@@ -65,6 +72,14 @@ function startingPrompt() {
 
             case "Update Employee roles":
                 updateRoles();
+                break;
+
+            case "Delete Roles":
+                deleteRoles();
+                break;
+            
+            case "Delete Employees":
+                deleteEmps();
                 break;
 
             case "Finished":
@@ -189,6 +204,7 @@ function addEmployee() {
                 {
                     name: "managerId",
                     type: "list",
+                    message: "Please select a manager for this employee",
                     choices: manager_Id
                 },
 
@@ -220,14 +236,22 @@ function viewEmployees() {
 
 }
 
+function viewManagers() {
+    connection.query("SELECT * from employee WHERE manager_id IS NULL", function (err, data) {
+        if (err) throw err;
+        console.table(data);
+
+        startingPrompt();
+    })
+
+}
+
 function viewRoles() {
     connection.query("SELECT * from role", function (err, data) {
         if (err) throw err;
         console.table(data);
         startingPrompt();
     })
-    
-
 }
 
 function viewDepts() {
@@ -290,5 +314,76 @@ function updateRoles() {
                     });
             })
         })
+    })
+}
+
+function deleteRoles() {
+    let roles = [];
+    connection.query("SELECT * from role", function (err, data) {
+        if (err) throw err;
+        for (let i = 0; i < data.length; i++) {
+            roles.push({
+                name: data[i].title,
+                value: data[i].id
+            })
+        }
+
+        inquirer.prompt([
+            {
+                name: "delRole",
+                type: "list",
+                message: "Please select the role you wish to delete",
+                choices: roles
+            },
+
+        ]).then(function (response) {
+            connection.query("DELETE FROM role WHERE ? ", [
+                {
+                    id: response.delRole,
+                },
+            ],
+                function (err, res) {
+                    if (err) throw err;
+                    console.log(res.affectedRows + " deleted!\n");
+                    startingPrompt();
+                });
+        })
+
+    })
+}
+
+function deleteEmps() {
+    let employees = [];
+
+    connection.query("SELECT * from employee", function (err, data) {
+        if (err) throw err;
+        for (let i = 0; i < data.length; i++) {
+            employees.push({
+                name: data[i].first_name,
+                value: data[i].id
+            })
+        }
+
+        inquirer.prompt([
+            {
+                name: "delEmp",
+                type: "list",
+                message: "Please select the employee you wish to remove",
+                choices: employees
+            },
+
+        ]).then(function (response) {
+            connection.query("DELETE FROM employee WHERE ? ", [
+                {
+                    id: response.delEmp,
+                },
+            ],
+                function (err, res) {
+                    if (err) throw err;
+                    console.log(res.affectedRows + " deleted!\n");
+                    startingPrompt();
+                });
+        })
+
     })
 }

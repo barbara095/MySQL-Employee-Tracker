@@ -31,5 +31,5 @@ VALUES
 ("Kobe", "Johnston", 8, NULL),
 ("Amanda", "Burns", 1, 3),
 ("Jayden", "Marshall", 6, 4),
-
-SELECT employee.role_id INNER JOIN 
+("Lucy", "Hill", 7, NULL);
+("Luke", "Hampton", 4, 6);
