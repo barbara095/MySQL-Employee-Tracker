@@ -72,9 +72,6 @@ function startingPrompt() {
                 connection.end();
                 break;
 
-            default:
-                startingPrompt();
-
         }
     })
         .catch(function (err) {
@@ -214,21 +211,22 @@ function addEmployee() {
 
 };
 
-
 function viewEmployees() {
     connection.query("SELECT * from employee", function (err, data) {
         if (err) throw err;
+        console.table(data);
+        startingPrompt();
     })
-    console.table(data);
-    startingPrompt();
+
 }
 
 function viewRoles() {
     connection.query("SELECT * from role", function (err, data) {
         if (err) throw err;
         console.table(data);
+        startingPrompt();
     })
-    startingPrompt();
+    
 
 }
 
@@ -236,9 +234,8 @@ function viewDepts() {
     connection.query("SELECT * from department", function (err, data) {
         if (err) throw err;
         console.table(data);
+        startingPrompt();
     })
-    startingPrompt();
-
 }
 
 function updateRoles() {
@@ -275,7 +272,7 @@ function updateRoles() {
                     message: "Please select the new role for the employee",
                     choices: new_role
                 },
-            
+
 
             ]).then(function (response) {
                 connection.query("UPDATE employee SET ? WHERE ?", [
