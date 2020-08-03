@@ -82,59 +82,6 @@ function startingPrompt() {
         });
 }
 
-
-// function roleId(id) {
-//     let role = [];
-//     connection.query("SELECT title FROM roles", function (err, res) {
-//         for (let i = 0; i < res.length; i++) {
-//             role.push(res[i].title);
-//         }
-
-//         inquirer.prompt([
-//             {
-//                 type: "List",
-//                 name: "roleId",
-//                 message: "What is the employee's role?",
-//                 choices: role
-//             }
-//         ]).then(function (response) {
-//             connection.query(`SELECT id from role WHERE title = '${res[0].id}'`, function (err, res) {
-//                 console.log(res[0].id);
-
-//                 connection.query(`UPDATE employee SET role_id = '${res[0].id}' WHERE employee.id = '${id}'`, function (err, res) {
-//                     if (err) throw err;
-//                 });
-//             });
-//             managerId(id);
-//         });
-//     });
-// }
-
-// function managerId() {
-//     connection.query("SELECT title FROM roles", function(err,res) {
-//         for (let i = 0; i< res.length; i++) {
-//             role.push(res[i].title);
-//         }
-
-//         inquirer.prompt([
-//             {
-//                 type: "List",
-//                 name: "roleId",
-//                 message: "What is the employee's role?",
-//                 choices: role
-//             }
-//         ]).then(function(response) {
-//             connection.query(`SELECT id from role WHERE title = '${res[0].id}'`, function(err,res) {
-//                 console.log(res[0].id);
-
-//                 connection.query(`UPDATE employee SET role_id = '${res[0].id}' WHERE employee.id = '${id}'`, function(err,res) {
-//                     if (err) throw err;
-//                 });
-//             });
-//             managerId(id);
-//         });
-//     });
-// }
 function addDept() {
     inquirer.prompt([
         {
@@ -295,10 +242,56 @@ function viewDepts() {
 }
 
 function updateRoles() {
+    let employee = [];
+    let new_role = [];
+
     connection.query("SELECT * FROM employee", function (err, res) {
         if (err) throw err;
+        for (let i = 0; i < res.length; i++) {
+            employee.push({
+                name: res[i].first_name,
+                value: res[i].id
+            })
+        }
+        connection.query("SELECT * FROM role", function (err, res2) {
+            if (err) throw err;
+            for (let i = 0; i < res2.length; i++) {
+                new_role.push({
+                    name: res2[i].title,
+                    value: res2[i].id
+                })
+            }
 
+            inquirer.prompt([
+                {
+                    name: "empUpdate",
+                    type: "list",
+                    message: "Please select the employee you want to update",
+                    choices: employee
+                },
+                {
+                    name: "roleUpdate",
+                    type: "List",
+                    message: "Please select the new role for the employee",
+                    choices: new_role
+                },
+            
+
+            ]).then(function (response) {
+                connection.query("UPDATE employee SET ? WHERE ?", [
+                    {
+                        role_id: response.roleUpdate,
+                    },
+                    {
+                        id: response.empUpdate
+                    }
+                ],
+                    function (err, res) {
+                        if (err) throw err;
+                        console.log(res.affectedRows + " updated!\n");
+                        startingPrompt();
+                    });
+            })
+        })
     })
-
 }
-
