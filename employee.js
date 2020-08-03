@@ -268,7 +268,7 @@ function updateRoles() {
                 },
                 {
                     name: "roleUpdate",
-                    type: "List",
+                    type: "list",
                     message: "Please select the new role for the employee",
                     choices: new_role
                 },
