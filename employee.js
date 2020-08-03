@@ -30,7 +30,7 @@ function startingPrompt() {
             "Add department",
             "Add role",
             "Add employee",
-            "View all employees",
+            "View employees",
             "View managers",
             "View roles",
             "View departments",
@@ -54,7 +54,7 @@ function startingPrompt() {
                 addEmployee();
                 break;
 
-            case "View all employees":
+            case "View employees":
                 viewEmployees();
                 break;
 
